@@ -49,9 +49,11 @@ export const createUser = async (request, response, next) => {
       return response
         .status(400)
         .json({ error: "Bad request", errorMessages: errors.array() });
+
     let { password, name, contact, email } = request.body;
     let result = await User.create({ name, password, contact, email });
     await sendEmail(email, name);
+
     return response.status(201).json({ message: "user created", user: result });
   } catch (err) {
     console.log(err);
@@ -97,7 +99,7 @@ export const authenticateUser = async (request, response, next) => {
     status &&
       response.cookie(
         "token",
-        generateToken(user.email, user._id, user.contact)
+        generateToken(user.email, user._id)
       );
 
     return status
@@ -145,7 +147,9 @@ const sendEmail = (email, name) => {
     });
   });
 };
-const generateToken = (email, userId, contact) => {
-  let payload = { email, userId, contact };
-  return jwt.sign(payload, process.env.TOKEN_SECRET);
+const generateToken = (email, userId) => {
+  let payload = { userId:userId,email:email};
+
+  let token= jwt.sign(payload, process.env.JWT_SECRET);
+  return token;
 };

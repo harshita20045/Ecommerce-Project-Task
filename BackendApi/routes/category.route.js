@@ -4,8 +4,9 @@ import {
   getCategoryById,
   getCategoryByName,
 } from "../controller/category.controller.js";
+import { auth } from "../middleware/auth.js";
 const router = express.Router();
-router.post("/add", categoryAdd);
-router.get("/:id", getCategoryById);
-router.get("/name/:name", getCategoryByName);
+router.post("/add",auth, categoryAdd);
+router.get("/:id", auth,getCategoryById);
+router.get("/name/:name",auth, getCategoryByName);
 export default router;

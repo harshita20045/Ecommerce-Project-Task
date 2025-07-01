@@ -9,6 +9,7 @@ import {
 } from "../controller/user.controller.js";
 import { body } from "express-validator";
 import multer from "multer";
+import { auth } from "../middleware/auth.js";
 const upload = multer({ dest: "public/profile" });
 const router = express.Router();
 router.get("/", list);
@@ -25,6 +26,6 @@ router.post(
 );
 router.post("/authenticate", authenticateUser);
 router.post("/verification", verifyAccount);
-router.patch("/profile/:userId", upload.single("imageName"), createProfile);
-router.get("/:userId", fetchUser);
+router.patch("/profile/:userId", upload.single("imageName"), auth ,createProfile);
+router.get("/:userId", auth, fetchUser);
 export default router;
