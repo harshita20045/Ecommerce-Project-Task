@@ -1,25 +1,33 @@
 import express from "express";
 import mongoose from "mongoose";
-import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import userRouter from "./routes/user.route.js";
-import cookieParser from "cookie-parser";
+import UserRouter from "./routes/user.route.js";
+import ProductRouter from "./routes/product.route.js";
+import CartRouter from "./routes/cart.route.js";
+import CategoryRouter from "./routes/category.route.js";
+import bodyParser from "body-parser";
 import cors from "cors";
-import categoryRouter from "./routes/category.route.js"
-
+import cookieParser from "cookie-parser";
 dotenv.config();
 const app = express();
+
 mongoose
   .connect(process.env.DB_URL)
   .then((result) => {
+    app.use(express.static("public"));
     app.use(cors());
     app.use(cookieParser());
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
-    app.use("/user", userRouter);
-    app.use("/category",categoryRouter);
-    app.listen(process.env.PORT, () => {
-      console.log("Server Started");
+    app.use("/user", UserRouter);
+    app.use("/product", ProductRouter);
+    app.use("/cart", CartRouter);
+    app.use("/category", CategoryRouter);
+    app.listen(process.env.PORT || 3000, () => {
+      console.log("Server Started....");
     });
   })
-  .catch((err) => console.log("Db not Connected", err));
+  .catch((err) => {
+    console.log(err);
+    console.log("Database connection failed...");
+  });
