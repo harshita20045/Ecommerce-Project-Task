@@ -13,7 +13,7 @@ export const fetchUser = async (request, response, next) => {
       "http://localhost:3000/profile/" + user.profile.imageName;
     return response.status(200).json({ user });
   } catch (err) {
-    return response.status(500).json({ error: "Internal Server Error" });
+    return response.status(500).json({ error: "Internal Server Error...." });
   }
 };
 export const createProfile = async (request, response, next) => {
@@ -24,12 +24,9 @@ export const createProfile = async (request, response, next) => {
     user.name = request.body.name ?? user.name;
     user.contact = request.body.contact ?? user.contact;
     user.save();
-    return response.status(201).json({ message: "Profile udpated..." });
-    /*
-    let user = User.updateOne({_id:request.params.userId},{$set:{profile:{imageName:request.file.fileName,address:request.body.address},name:request.body.name,contact:request.body.contact}});
-    */
+    return response.status(201).json({ message: "Profile udpated...." });
   } catch (err) {
-    return response.status(500).json({ error: "Internal Server Error" });
+    return response.status(500).json({ error: "Internal Server Error...." });
   }
 };
 
@@ -38,7 +35,7 @@ export const list = async (request, response, next) => {
     const users = await User.find();
     return response.status(200).json({ users });
   } catch (err) {
-    return response.status(500).json({ error: "Internal Server Error" });
+    return response.status(500).json({ error: "Internal Server Error...." });
   }
 };
 
@@ -54,10 +51,12 @@ export const createUser = async (request, response, next) => {
     let result = await User.create({ name, password, contact, email });
     await sendEmail(email, name);
 
-    return response.status(201).json({ message: "user created", user: result });
+    return response
+      .status(201)
+      .json({ message: "user created....", user: result });
   } catch (err) {
     console.log(err);
-    return response.status(500).json({ error: "Internal Server Error" });
+    return response.status(500).json({ error: "Internal Server Error...." });
   }
 };
 
@@ -70,9 +69,9 @@ export const verifyAccount = async (request, response, next) => {
     );
     return response
       .status(200)
-      .json({ message: "Account Verified Successfully" });
+      .json({ message: "Account Verified Successfully...." });
   } catch (err) {
-    return response.status(500).json({ error: "Internal Server Error" });
+    return response.status(500).json({ error: "Internal Server Error...." });
   }
 };
 
@@ -96,19 +95,15 @@ export const authenticateUser = async (request, response, next) => {
 
     user.password = undefined;
 
-    status &&
-      response.cookie(
-        "token",
-        generateToken(user.email, user._id)
-      );
+    status && response.cookie("token", generateToken(user.email, user._id));
 
     return status
-      ? response.status(200).json({ message: "Sign in success", user })
+      ? response.status(200).json({ message: "Sign in success....", user })
       : response
           .status(401)
           .json({ error: "Unauthorized user | Invalid password" });
   } catch (err) {
-    return response.status(500).json({ error: "Internal Server Error" });
+    return response.status(500).json({ error: "Internal Server Error...." });
   }
 };
 
@@ -148,8 +143,8 @@ const sendEmail = (email, name) => {
   });
 };
 const generateToken = (email, userId) => {
-  let payload = { userId:userId,email:email};
+  let payload = { userId: userId, email: email };
 
-  let token= jwt.sign(payload, process.env.JWT_SECRET);
+  let token = jwt.sign(payload, process.env.JWT_SECRET);
   return token;
 };

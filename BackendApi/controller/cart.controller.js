@@ -7,7 +7,7 @@ export const fetchCart = async (request, response, next) => {
       .populate("userId");
     return response.status(200).json({ "cart-details": cart });
   } catch (err) {
-    return response.status(500).json({ error: "Internal Server Error" });
+    return response.status(500).json({ error: "Internal Server Error...." });
   }
 };
 export const addToCart = async (request, response, next) => {
@@ -21,21 +21,21 @@ export const addToCart = async (request, response, next) => {
       if (status)
         return response
           .status(200)
-          .json({ message: "Item is already added in cart" });
+          .json({ message: "Item is already added in cart...." });
       cart.cartItems.push({ productId });
       await cart.save();
       return response
         .status(201)
-        .json({ message: "Item successfully added in cart" });
+        .json({ message: "Item successfully added in cart...." });
     } else {
       let cart = Cart.create({ userId, cartItems: [{ productId }] });
       return response
         .status(201)
-        .json({ message: "Item successfully added in cart" });
+        .json({ message: "Item successfully added in cart...." });
     }
   } catch (err) {
     console.log(err);
-    return response.status(500).json({ error: "Internal Server Error" });
+    return response.status(500).json({ error: "Internal Server Error...." });
   }
 };
 
@@ -48,9 +48,11 @@ export const deleteCartProduct = async (request, response, next) => {
 
     await Cart.updateOne({ userId }, { $pull: { cartItems: { productId } } });
 
-    return response.status(200).json({ message: "Product removed from cart" });
+    return response
+      .status(200)
+      .json({ message: "Product removed from cart...." });
   } catch (err) {
     console.log(err);
-    return response.status(500).json({ error: "Internal Server Error" });
+    return response.status(500).json({ error: "Internal Server Error...." });
   }
 };

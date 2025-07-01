@@ -26,6 +26,11 @@ router.post(
 );
 router.post("/authenticate", authenticateUser);
 router.post("/verification", verifyAccount);
-router.patch("/profile/:userId", upload.single("imageName"), auth ,createProfile);
+router.patch(
+  "/profile/:userId",
+  upload.single("imageName"),
+  auth,
+  createProfile
+);
 router.get("/:userId", auth, fetchUser);
 export default router;

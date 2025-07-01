@@ -12,6 +12,6 @@ export const auth = async (request, response, next) => {
     console.log(decode.userId + " " + email);
     next();
   } catch (err) {
-    return response.status(500).json({ message: "Unauthorized User" });
+    return response.status(500).json({ message: "Unauthorized User...." });
   }
 };

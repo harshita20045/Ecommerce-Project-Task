@@ -8,6 +8,6 @@ import { auth } from "../middleware/auth.js";
 const router = express.Router();
 
 router.post("/add-to-cart", auth, addToCart);
-router.get("/:userId", auth,fetchCart);
-router.delete("/delete/:userId", auth,deleteCartProduct);
+router.get("/:userId", auth, fetchCart);
+router.delete("/delete/:userId", auth, deleteCartProduct);
 export default router;
